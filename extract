@@ -117,11 +117,21 @@ while (<>) {
 	}
 
 	if (/<table border=1 cellspacing=0 cellpadding=0 width=350>/) {
+		print "$coord,$name,$coord,$date,$peak_time,";
+
+		for $direction ("North", "East", "West", "South") {
+			print "$peak{'left'}{$direction},$peak{'thru'}{$direction},$peak{'right'}{$direction},";
+		}
+		for $direction ("North", "East", "West", "South") {
+			print "$peak{'peds'}{$direction},";
+		}
+		for $direction ("North", "East", "West", "South") {
+			print "$peak{'bikes'}{$direction},";
+		}
+
+		%peak = ();
+
+		print "\n";
 	}
 }
 
-for $direction ("North", "East", "West", "South") {
-	print "$peak{'left'}{$direction},$peak{'thru'}{$direction},$peak{'right'}{$direction},";
-}
-
-print "\n";
