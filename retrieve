@@ -1,0 +1,28 @@
+#!/usr/bin/perl
+
+system "curl -O 'http://data.vancouver.ca/download/kml/intersection_movements_traffic_counts.kmz'";
+
+open(IN, "gzcat intersection_movements_traffic_counts.kmz |");
+while (<IN>) {
+	if (/coordinate=([0-9]+)/) {
+		print "$1\n";
+		$coordinates{$1} = 1;
+	}
+}
+close(IN);
+
+for $coordinate (keys(%coordinates)) {
+	open(IN, "curl 'http://cfapp.vancouver.ca/vanmapmtc_wa/getDiagrams.cfm?coordinate=$coordinate' |");
+
+	while (<IN>) {
+		if (/(html\/diagram\/reports\/[0-9]+\/[0-9]+.htm)/) {
+			$path = $1;
+
+			$dir = $path;
+			$dir =~ s/\/[^\/]*$//;
+
+			system "mkdir -p $dir";
+			system "curl -o '$path' 'http://cfapp.vancouver.ca/vanmapmtc_wa/$path'";
+		}
+	}
+}
