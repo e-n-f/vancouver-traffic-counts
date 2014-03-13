@@ -15,6 +15,16 @@ print "$line[58]";
 
 while (<>) {
 	if (/^<tr><th>(North|South|East|West)/) {
+		s/ class='g'//g;
+		s/<\/th>//g;
+		s/<\/TH>//g;
+		s/<BR>/ /g;
+		s/<tr>//g;
+		s/ +/ /g;
+		s/^<th>//;
+		s/<th>/,/g;
+		s/ *,/,/g;
+
 		print;
 	}
 
