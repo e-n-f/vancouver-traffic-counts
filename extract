@@ -3,15 +3,40 @@
 for ($i = 0; $i < 71; $i++) {
 	$line[$i] = <>;
 
+	chomp $line[$i];
+	$line[$i] =~ s/\015//g;
 	$line[$i] =~ s/<\/p><\/th>//;
 	$line[$i] =~ s/  <th valign=TOP nowrap><p>//;
 	$line[$i] =~ s/  <th valign=TOP align=LEFT nowrap><p>//;
 }
 
-print "$line[68]";
-print "$line[66]";
-print "$line[60]";
-print "$line[58]";
+$line[68] =~ s/Weather: //;
+$line[66] =~ s/Coordinate: //;
+$line[58] =~ s/,//g;
+
+print "$line[68]\n";
+print "$line[66]\n";
+print "$line[60]\n";
+print "$line[58]\n";
+
+$coord = $line[66];
+
+open(IN, "intersection_movements_traffic_counts.kml");
+while (<IN>) {
+	if (/coordinate=$coord/) {
+		$found = 1;
+	}
+
+	if (/<coordinates>([0-9.-]*),([0-9.-]*)/) {
+		if ($found) {
+			$lon = $1;
+			$lat = $2;
+			last;
+		}
+	}
+}
+
+print "$lat,$lon\n";
 
 while (<>) {
 	if (/^<tr><th>(North|South|East|West)/) {
