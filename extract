@@ -115,13 +115,35 @@ while (<>) {
 		s/<TD>/,/g;
 		s/<th>/,/g;
 		s/ *,/,/g;
+
+		@cols = split(/, */);
+		$peak_time = $cols[0];
+		$times{$peak_time} = 1;
+
+		for ($i = 1; $i <= $#cols; $i++) {
+			if ($headers[$i] =~ /Left/) {
+				$peak{$peak_time}{'left'}{$direction} += $cols[$i];
+			}
+			if ($headers[$i] =~ /Right/) {
+				$peak{$peak_time}{'right'}{$direction} += $cols[$i];
+			}
+			if ($headers[$i] =~ /Thru/) {
+				$peak{$peak_time}{'thru'}{$direction} += $cols[$i];
+			}
+			if ($headers[$i] =~ /Bikes/) {
+				$peak{$peak_time}{'bikes'}{$direction} += $cols[$i];
+			}
+			if ($headers[$i] =~ /Peds/) {
+				$peak{$peak_time}{'peds'}{$direction} += $cols[$i];
+			}
+		}
 	}
 
 	if (/<table border=1 cellspacing=0 cellpadding=0 width=350>/) {
 	}
 }
 
-for $time (keys(%times)) {
+for $time (sort(keys(%times))) {
 	print "$coord,$name,$coord,$date,$time,";
 
 	for $direction ("North", "East", "West", "South") {
