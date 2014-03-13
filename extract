@@ -20,6 +20,9 @@ print "$line[60]\n";
 print "$line[58]\n";
 
 $coord = $line[66];
+$weather = $line[68];
+$name = $line[60];
+$date = $line[58];
 
 open(IN, "intersection_movements_traffic_counts.kml");
 while (<IN>) {
@@ -39,6 +42,9 @@ while (<IN>) {
 print "$lat,$lon\n";
 
 while (<>) {
+	chomp;
+	s/\015//;
+
 	if (/^<tr><th>(North|South|East|West)/) {
 		s/ class='g'//g;
 		s/<\/th>//g;
@@ -50,7 +56,10 @@ while (<>) {
 		s/<th>/,/g;
 		s/ *,/,/g;
 
-		print;
+		@headers = split(/, */);
+		$direction = $headers[0];
+
+		# print;
 	}
 
 	if (/<tr><th class='g' nowrap>(AM|PM) Max Hour/) {
@@ -68,7 +77,26 @@ while (<>) {
 		s/<th>/,/g;
 		s/ *,/,/g;
 
-		print;
+		@cols = split(/, */);
+		$peak_time = $cols[0];
+
+		for ($i = 1; $i <= $#cols; $i++) {
+			if ($headers[$i] =~ /Left/) {
+				$peak{'left'}{$direction} += $cols[$i];
+			}
+			if ($headers[$i] =~ /Right/) {
+				$peak{'right'}{$direction} += $cols[$i];
+			}
+			if ($headers[$i] =~ /Thru/) {
+				$peak{'thru'}{$direction} += $cols[$i];
+			}
+			if ($headers[$i] =~ /Bikes/) {
+				$peak{'bikes'}{$direction} += $cols[$i];
+			}
+			if ($headers[$i] =~ /Peds/) {
+				$peak{'peds'}{$direction} += $cols[$i];
+			}
+		}
 	}
 
 	if (/<tr><th class='g' nowrap>2 Hour Totals/) {
@@ -86,13 +114,14 @@ while (<>) {
 		s/<TD>/,/g;
 		s/<th>/,/g;
 		s/ *,/,/g;
-
-		print;
 	}
 
 	if (/<table border=1 cellspacing=0 cellpadding=0 width=350>/) {
-		print "\n";
 	}
 }
 
-print "\n\n";
+for $direction ("North", "East", "West", "South") {
+	print "$peak{'left'}{$direction},$peak{'thru'}{$direction},$peak{'right'}{$direction},";
+}
+
+print "\n";
