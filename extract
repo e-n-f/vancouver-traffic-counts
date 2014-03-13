@@ -29,10 +29,39 @@ while (<>) {
 	}
 
 	if (/<tr><th class='g' nowrap>(AM|PM) Max Hour/) {
+		s/ class='g'//g;
+		s/ nowrap//g;
+		s/<\/th>//g;
+		s/<\/TH>//g;
+		s/<\/td>//g;
+		s/<\/TD>//g;
+		s/<BR>/ /g;
+		s/<tr>//g;
+		s/ +/ /g;
+		s/^<th>//;
+		s/<TD>/,/g;
+		s/<th>/,/g;
+		s/ *,/,/g;
+
 		print;
 	}
 
 	if (/<tr><th class='g' nowrap>2 Hour Totals/) {
+		s/ class='g'//g;
+		s/ nowrap//g;
+		s/<\/th>//g;
+		s/<\/TH>//g;
+		s/<\/td>//g;
+		s/<\/TD>//g;
+		s/<BR>/ /g;
+		s/<br>/ /g;
+		s/<tr>//g;
+		s/ +/ /g;
+		s/^<th>//;
+		s/<TD>/,/g;
+		s/<th>/,/g;
+		s/ *,/,/g;
+
 		print;
 	}
 
