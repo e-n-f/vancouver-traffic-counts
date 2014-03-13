@@ -13,4 +13,22 @@ print "$line[66]";
 print "$line[60]";
 print "$line[58]";
 
+while (<>) {
+	if (/^<tr><th>(North|South|East|West)/) {
+		print;
+	}
+
+	if (/<tr><th class='g' nowrap>(AM|PM) Max Hour/) {
+		print;
+	}
+
+	if (/<tr><th class='g' nowrap>2 Hour Totals/) {
+		print;
+	}
+
+	if (/<table border=1 cellspacing=0 cellpadding=0 width=350>/) {
+		print "\n";
+	}
+}
+
 print "\n\n";
