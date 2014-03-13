@@ -1,0 +1,16 @@
+#!/usr/bin/perl
+
+for ($i = 0; $i < 71; $i++) {
+	$line[$i] = <>;
+
+	$line[$i] =~ s/<\/p><\/th>//;
+	$line[$i] =~ s/  <th valign=TOP nowrap><p>//;
+	$line[$i] =~ s/  <th valign=TOP align=LEFT nowrap><p>//;
+}
+
+print "$line[68]";
+print "$line[66]";
+print "$line[60]";
+print "$line[58]";
+
+print "\n\n";
