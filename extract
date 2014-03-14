@@ -148,7 +148,7 @@ for $time (sort(keys(%times))) {
 	print "$coord,$name,$coord,$date,$time,";
 
 	for $direction ("North", "East", "South", "West") {
-		print "$peak{$time}{'left'}{$direction},$peak{$time}{'thru'}{$direction},$peak{$time}{'right'}{$direction},";
+		print "$peak{$time}{'right'}{$direction},$peak{$time}{'thru'}{$direction},$peak{$time}{'left'}{$direction},";
 	}
 	for $direction ("North", "East", "South", "West") {
 		print "$peak{$time}{'peds'}{$direction},";
