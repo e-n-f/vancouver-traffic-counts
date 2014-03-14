@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 
+print STDERR "@ARGV\n";
+
 for ($i = 0; $i < 71; $i++) {
 	$line[$i] = <>;
 
@@ -13,11 +15,6 @@ for ($i = 0; $i < 71; $i++) {
 $line[68] =~ s/Weather: //;
 $line[66] =~ s/Coordinate: //;
 $line[58] =~ s/,//g;
-
-print "$line[68]\n";
-print "$line[66]\n";
-print "$line[60]\n";
-print "$line[58]\n";
 
 $coord = $line[66];
 $weather = $line[68];
@@ -38,8 +35,6 @@ while (<IN>) {
 		}
 	}
 }
-
-print "$lat,$lon\n";
 
 while (<>) {
 	chomp;
@@ -156,6 +151,7 @@ for $time (sort(keys(%times))) {
 		print "$peak{$time}{'bikes'}{$direction},";
 	}
 
+	print "$lat,$lon,$weather";
 	print "\n";
 }
 
