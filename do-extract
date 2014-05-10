@@ -1,0 +1,6 @@
+#!/bin/sh
+
+(
+	echo "Int_no,Intersection,idDemande,Date,Heure,ND,NTD,NG,ED,ETD,EG,SD,STD,SG,OD,OTD,OG,Piet_N,Piet_E,Piet_S,Piet_O,Cy_N,Cy_E,Cy_S,Cy_O,Lat,Lon,Temps"
+	find html -name '*.htm' -print | xargs -L1 ./extract | sort
+) > counts-vancouver.csv

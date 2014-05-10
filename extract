@@ -145,7 +145,12 @@ while (<>) {
 }
 
 for $time (sort(keys(%times))) {
-	print "$coord,$name,$coord,$date,$time,";
+	$t2 = $time;
+	$t2 =~ s/2 Hour Totals //;
+	$t2 =~ s/.M Max Hour //;
+	$t2 =~ s/ //g;
+
+	print "$coord,$name,$coord,$date,$t2,";
 
 	for $direction ("North", "East", "South", "West") {
 		print "$peak{$time}{'right'}{$direction},$peak{$time}{'thru'}{$direction},$peak{$time}{'left'}{$direction},";
