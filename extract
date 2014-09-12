@@ -2,6 +2,8 @@
 
 print STDERR "@ARGV\n";
 
+$fname = $ARGV[0];
+
 while (<>) {
 	last if /<table cellspacing=0 cellpadding=0 border=0>/;
 }
@@ -150,7 +152,7 @@ for $time (sort(keys(%times))) {
 	$t2 =~ s/.M Max Hour //;
 	$t2 =~ s/ //g;
 
-	print "vancouver/$coord,$name,$coord,$date,$t2,";
+	print "vancouver/cfapp.vancouver.ca/vanmapmtc_wa/$fname,$name,$coord,$date,$t2,";
 
 	for $direction ("North", "East", "South", "West") {
 		print "$peak{$time}{'right'}{$direction},$peak{$time}{'thru'}{$direction},$peak{$time}{'left'}{$direction},";
