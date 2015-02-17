@@ -1,0 +1,45 @@
+#!/usr/bin/perl
+
+while (<>) {
+        chomp;
+	($id, $name, $id2, $date, $time, @rest) = split(/,/);
+	$walk = $rest[12] + $rest[13] + $rest[14] + $rest[15];
+	$weather = $rest[22];
+
+	next if $time ne "15:30-17:30";
+
+	if ($walk != 0) {
+		#$walk{"$name $time"}{$date} = $walk;
+		$walk{"$name"}{"$date $weather $id"} = $walk;
+	}
+}
+
+for $place (keys(%walk)) {
+	%list = %{$walk{$place}};
+	@keys = sort {$list{$a} <=> $list{$b}} keys(%list);
+
+	next if ($#keys + 1 < 3);
+	#next if ($#keys + 1 != 4);
+
+	if ($#keys % 2 == 0) {
+		$median = $list{$keys[$#keys / 2]};
+	} else {
+		$median = ($list{$keys[$#keys / 2]} + $list{$keys[$#keys / 2 + 1]}) / 2;
+	}
+
+	$sumlog = 0;
+	$count = 0;
+
+	for $k (@keys) {
+		$sumlog += log($list{$k});
+		$count++;
+	}
+
+	$geom_mean = exp($sumlog / $count);
+
+	for $k (@keys) {
+		printf("%.6f %s %s %s\n", $list{$k} / $geom_mean, $list{$k}, $k, $place);
+	}
+
+	print "\n";
+}
