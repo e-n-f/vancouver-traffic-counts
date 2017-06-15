@@ -1,0 +1,12 @@
+#!/bin/sh
+
+curl -o counts.json 'https://app.vancouver.ca/vanmapmtc_net/res/MTC_data_ajax.txt?_=1497569629616'
+
+cat counts.json | tr '"' '\012' | grep '\.htm' |
+while read i
+do
+	if test -f html/diagram/reports/$i
+	then :
+	else curl -o html/diagram/reports/$i https://app.vancouver.ca/vanmapmtc_net/diagrams/reports/$i
+	fi
+done
